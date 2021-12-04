@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
+import { User } from './users/user.entity';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { PerfumeModule } from './perfume/perfume.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -24,17 +26,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           },
           type: 'postgres',
           autoLoadEntities: true,
+          entities: ['dist/src/entites/**.entity.ts'],
           synchronize: true,
-          host: configService.get('DB_HOST'),
-          port: configService.get('DB_PORT'),
-          username: configService.get('DB_USERNAME'),
-          password: configService.get('DB_PASSWORD'),
-          database: configService.get('DB_DATABASE'),
+          url: configService.get('DB_URL'),
         };
       },
     }),
+    TypeOrmModule.forFeature([User]),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    UsersModule,
+    AuthModule,
+    PerfumeModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
