@@ -11,7 +11,7 @@ import {
 @EntityRepository(User)
 export class UsersRepository extends Repository<User> {
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const { email, password, fullname, phone } = createUserDto;
+    const { email, password, fullname, phone,address } = createUserDto;
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(password, salt);
     const user = this.create({
@@ -19,6 +19,7 @@ export class UsersRepository extends Repository<User> {
       password: hashPassword,
       fullname,
       phone,
+      address
     });
 
     try {
