@@ -42,7 +42,7 @@ export class PerfumeController {
 
   @Patch('/:id')
   @ApiBody({ type: UpdatePerfumeDto })
-  UpdateProfile(@Param('id') id: string, perfumeDto: UpdatePerfumeDto) {
+  UpdateProfile(@Param('id') id: string, @Body() perfumeDto: UpdatePerfumeDto) {
     return this.perfumesService.updatePerfume(id, perfumeDto);
   }
 

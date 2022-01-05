@@ -71,10 +71,9 @@ export class FragrancesService {
       .where(`fragrance.isDeleted = :isDeleted`, { isDeleted: false });
 
     if (search) {
-      query.andWhere(
-        '(LOWER(fragrance.name) LIKE LOWER(:search) OR fragrance.publishYear LIKE :search)',
-        { search: `%${search}%` },
-      );
+      query.andWhere('(LOWER(fragrance.name) LIKE LOWER(:search)', {
+        search: `%${search}%`,
+      });
     }
 
     try {
