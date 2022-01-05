@@ -1,29 +1,53 @@
-import { ApiTags } from '@nestjs/swagger';
-import { Controller, Delete, Get, Patch } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { UpdatePerfumeDto } from './dto/updatePerfume.dto';
+import { GetPerfumesFilterDto } from './dto/getPerfumesFilter.dto';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { PerfumeService } from './perfume.service';
+import { Perfume } from './perfume.entity';
+import { PerfumeDto } from './dto/addPerfume.dto';
 
-@Controller('perfume')
-@ApiTags ('Perfume APIs')
+@Controller('perfumes')
+@ApiTags('Perfume APIs')
+@ApiBearerAuth('access-token')
+@UseGuards(AuthGuard())
 export class PerfumeController {
   constructor(private perfumesService: PerfumeService) {}
 
+  @Post()
+  @ApiBody({ type: PerfumeDto })
+  addPerfume(@Body() addPerfumeDto: PerfumeDto) {
+    return this.perfumesService.addPerfume(addPerfumeDto);
+  }
+
   @Get()
-  getUser() {
-    return this.perfumesService.getPerfume();
+  GetPerfumes(@Query() filterDto: GetPerfumesFilterDto) {
+    return this.perfumesService.getPerfumes(filterDto);
   }
 
   @Get('/:id')
-  getPerfumeById(id: string) {
-    return this.perfumesService.getPerfume();
+  getPerfumeById(@Param('id') id: string) {
+    return this.perfumesService.getPerfumeById(id);
   }
 
-  @Patch()
-  UpdateProfile() {
-    return this.perfumesService.getPerfume();
+  @Patch('/:id')
+  @ApiBody({ type: UpdatePerfumeDto })
+  UpdateProfile(@Param('id') id: string, perfumeDto: UpdatePerfumeDto) {
+    return this.perfumesService.updatePerfume(id, perfumeDto);
   }
 
-  @Delete()
-  deletePerfume() {
-    return this.perfumesService.getPerfume();
+  @Delete('/:id')
+  deletePerfume(@Param('id') id: string) {
+    return this.perfumesService.deletePerfume(id);
   }
 }
