@@ -1,3 +1,4 @@
+import { Perfume } from './../perfume/perfume.entity';
 export enum VALIDATE_ERROR {
   PASSWORD_WEAK = 'Password must have 8-32 characters, at least 1 upper case and 1 lowercase letter, and at least 1 number and 1 special character',
   NEW_PASSWORD_WEAK = 'New pasword is to weak',
@@ -26,13 +27,17 @@ export enum EXCEPTION_MESSAGE {
   GET_BOOKS_FAIL = 'Failed to get books',
   CREATE_BOOK_FAIL = 'Failed to create book',
   CATEGORY_CONFLICT = 'category already exists',
-  BOOK_CONFLICT = 'book already exists',
-  CATEGORY_NOT_FOUND = 'category not found',
-  AUTHOR_NOT_FOUND = 'author not found',
-  BOOK_NOT_FOUND = 'Book not found',
+  PERFUME_CONFLICT = 'perfume already exists',
+  BRAND_NOT_FOUND = 'brand not found',
+  FRAGRANCE_NOT_FOUND = 'fragrance not found',
+  PERFUME_NOT_FOUND = 'Perfume not found',
   QUERY_FAIL = 'Query failed, please check your query',
 }
 
 export enum SUCCESS_MESSAGE {
   PASSWORD_CONFIRM_SUCCESSFULY = 'Update password succesfuly',
+}
+
+export enum PERFUMES {
+  GET_ALL_FAILED = 'GET_ALL_FAILED',
 }

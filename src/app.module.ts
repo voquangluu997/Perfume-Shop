@@ -6,6 +6,8 @@ import { User } from './users/user.entity';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { PerfumeModule } from './perfume/perfume.module';
+import { BrandsModule } from './brands/brands.module';
+import { FragranceModule } from './fragrances/fragrance.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -26,7 +28,7 @@ import { PerfumeModule } from './perfume/perfume.module';
           },
           type: 'postgres',
           autoLoadEntities: true,
-          entities: ['dist/src/entites/**.entity.ts'],
+          entities: ['dist/src/**/*.entity.ts'],
           synchronize: true,
           url: configService.get('DB_URL'),
         };
@@ -37,6 +39,8 @@ import { PerfumeModule } from './perfume/perfume.module';
     UsersModule,
     AuthModule,
     PerfumeModule,
+    BrandsModule,
+    FragranceModule,
   ],
 })
 export class AppModule {}

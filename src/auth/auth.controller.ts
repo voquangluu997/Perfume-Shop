@@ -7,7 +7,6 @@ import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('auth')
-@ApiBearerAuth('access-token')
 @ApiTags('Auth APIs')
 export class AuthController {
   constructor(private authService: AuthService) {}
