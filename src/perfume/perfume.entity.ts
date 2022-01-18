@@ -39,6 +39,9 @@ export class Perfume {
   @Column({ nullable: true })
   sex: string;
 
+  @Column({ nullable: true })
+  origin: string;
+
   @ManyToOne(() => Brand, (brand) => brand.perfumes, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',

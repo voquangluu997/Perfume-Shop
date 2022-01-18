@@ -20,7 +20,6 @@ import { PerfumeDto } from './dto/addPerfume.dto';
 @Controller('perfumes')
 @ApiTags('Perfume APIs')
 @ApiBearerAuth('access-token')
-@UseGuards(AuthGuard())
 export class PerfumeController {
   constructor(private perfumesService: PerfumeService) {}
 
