@@ -1,4 +1,3 @@
-import { Perfume } from './../perfume/perfume.entity';
 export enum VALIDATE_ERROR {
   PASSWORD_WEAK = 'Password must have 8-32 characters, at least 1 upper case and 1 lowercase letter, and at least 1 number and 1 special character',
   NEW_PASSWORD_WEAK = 'New pasword is to weak',
