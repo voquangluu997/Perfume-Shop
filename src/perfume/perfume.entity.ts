@@ -1,9 +1,11 @@
+import { Review } from './../review/review.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -24,7 +26,7 @@ export class Perfume {
   @Column({ nullable: true })
   about: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: 'stocking' })
   status: string;
 
   @Column({ name: 'publish_year', nullable: true })
@@ -49,6 +51,8 @@ export class Perfume {
   @JoinColumn({ name: 'brand_id' })
   brand: Brand;
 
+  @OneToOne(()=>Review, (review)=>review.perfume)
+  review: Review
   @ManyToOne(() => Fragrance, (fragrance) => fragrance.perfumes, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',

@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { PerfumeModule } from './perfume/perfume.module';
 import { BrandsModule } from './brands/brands.module';
 import { FragranceModule } from './fragrances/fragrance.module';
+import { ReviewModule } from './review/review.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -41,6 +42,7 @@ import { FragranceModule } from './fragrances/fragrance.module';
     PerfumeModule,
     BrandsModule,
     FragranceModule,
+    ReviewModule,
   ],
 })
 export class AppModule {}

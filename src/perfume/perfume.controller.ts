@@ -11,10 +11,8 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { PerfumeService } from './perfume.service';
-import { Perfume } from './perfume.entity';
 import { PerfumeDto } from './dto/addPerfume.dto';
 
 @Controller('perfumes')

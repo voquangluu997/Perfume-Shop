@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Review } from '../entities';
 
 @Entity()
 export class User {
@@ -23,7 +25,7 @@ export class User {
   @Column({ nullable: true })
   phone: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   address: string;
 
   @CreateDateColumn({ name: 'create_at' })
@@ -31,4 +33,7 @@ export class User {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updateAt: Date;
+
+  @OneToMany(() => Review, (review) => review.user)
+  reviews: Review[];
 }

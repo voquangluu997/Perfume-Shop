@@ -12,7 +12,7 @@ import { Brand, Fragrance, Perfume } from '../entities';
 import { EXCEPTION_MESSAGE, PERFUMES, VALIDATE_ERROR } from '../constants';
 import { PerfumeDto } from './dto/addPerfume.dto';
 import { getConnection } from 'typeorm';
-import { ERROR } from '../constant';
+import { ERROR } from '../constants';
 
 @Injectable()
 export class PerfumeService {
@@ -26,7 +26,6 @@ export class PerfumeService {
       where: { id },
       relations: ['brand', 'fragrance'],
     });
-    console.log(perfume);
     if (!perfume) {
       throw new NotFoundException(ERROR.PERFUME_NOT_FOUND);
     }
@@ -34,8 +33,17 @@ export class PerfumeService {
   }
 
   async addPerfume(perfumeDto: PerfumeDto) {
-    const { name, publishYear, price, about, image, brandId, fragranceId } =
-      perfumeDto;
+    const {
+      name,
+      price,
+      about,
+      publishYear,
+      image,
+      brandId,
+      fragranceId,
+      sex,
+      origin,
+    } = perfumeDto;
 
     try {
       var brand = await getConnection()
@@ -68,9 +76,11 @@ export class PerfumeService {
       price,
       publishYear,
       about,
+      origin,
       image,
       brand,
       fragrance,
+      sex,
     });
 
     try {
@@ -80,11 +90,10 @@ export class PerfumeService {
         fragrance,
       });
     } catch (error) {
-      console.log(error.message);
       if (error.code == VALIDATE_ERROR.CONFLICT_CODE)
         throw new ConflictException(EXCEPTION_MESSAGE.PERFUME_CONFLICT);
       throw new InternalServerErrorException(
-        EXCEPTION_MESSAGE.CREATE_BOOK_FAIL,
+        EXCEPTION_MESSAGE.CREATE_PERFUME_FAIL,
       );
     }
   }
@@ -93,7 +102,12 @@ export class PerfumeService {
     updatePerfumeDto: UpdatePerfumeDto,
   ): Promise<Perfume> {
     const perfume = await this.getPerfumeById(id);
-    const { brandId, fragranceId } = updatePerfumeDto;
+    let brandId = perfume.brand.id,
+      fragranceId = perfume.fragrance.id;
+
+    if (updatePerfumeDto.brandId) brandId = updatePerfumeDto.brandId;
+    if (updatePerfumeDto.fragranceId)
+      fragranceId = updatePerfumeDto.fragranceId;
 
     try {
       var brand = await getConnection()

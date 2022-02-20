@@ -24,8 +24,8 @@ export enum EXCEPTION_MESSAGE {
   CREATE_AUTHOR_FAIL = 'Failed to create author',
   GET_CATEGORIES_FAIL = 'Failed to get categories',
   CREATE_CATEGORY_FAIL = 'Failed to get category',
-  GET_BOOKS_FAIL = 'Failed to get books',
-  CREATE_BOOK_FAIL = 'Failed to create book',
+  GET_PERFUMES_FAIL = 'Failed to get perfumes',
+  CREATE_PERFUME_FAIL = 'Failed to create perfume',
   CATEGORY_CONFLICT = 'category already exists',
   PERFUME_CONFLICT = 'perfume already exists',
   BRAND_NOT_FOUND = 'brand not found',
@@ -40,4 +40,17 @@ export enum SUCCESS_MESSAGE {
 
 export enum PERFUMES {
   GET_ALL_FAILED = 'GET_ALL_FAILED',
+}
+
+export enum ERROR {
+  ALREADY_REVIEW = 'ALREADY_REVIEW',
+  PERFUME_NOT_FOUND = 'PERFUME_NOT_FOUND',
+  BRAND_NOT_FOUND = 'BRAND_NOT_FOUND',
+  FRAGRANCE_NOT_FOUND = 'FRAGRANCE_NOT_FOUND',
+  ADD_FRAGRANCE_ERROR = 'ERROR.ADD_FRAGRANCE_ERROR',
+  ADD_BRAND_ERROR = 'ADD_BRAND_ERROR',
+  GET_FRAGRANCES_FAILED = 'GET_FRAGRANCES_FAILED',
+  GET_BRANDS_FAILED = 'GET_BRANDS_FAILED',
+  REVIEW_IS_EMPTY = 'REVIEW_IS_EMPTY',
+  USER_NOT_FOUND = 'USER_NOT_FOUND',
 }

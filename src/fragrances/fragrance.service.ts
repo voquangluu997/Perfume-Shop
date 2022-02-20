@@ -1,4 +1,4 @@
-import { ERROR } from './../constant/index';
+import { ERROR } from './../constants/index';
 import {
   Injectable,
   InternalServerErrorException,

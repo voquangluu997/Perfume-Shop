@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BrandsRepository } from './brand.repository';
-import { ERROR } from '../constant';
+import { ERROR } from '../constants';
 import { Brand } from './brand.entity';
 import { GetBrandsFilterDto } from './dto/getBrandFilter.dto';
 import { UpdateBrandDto } from './dto/updateBrand.dto';

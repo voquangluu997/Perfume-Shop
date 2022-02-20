@@ -9,6 +9,7 @@ export class UpdatePerfumeDto {
 
   @Type(() => Number)
   @IsNumber()
+  @IsOptional()
   price?: number;
 
   @IsOptional()

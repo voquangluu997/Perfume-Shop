@@ -17,6 +17,9 @@ export class PerfumeDto {
   about: string;
 
   @IsNotEmpty()
+  origin: string;
+
+  @IsNotEmpty()
   @IsOptional()
   image: string;
 
