@@ -1,4 +1,4 @@
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsOptional, IsPhoneNumber, IsString } from 'class-validator';
 export class GetUserProfileDto {
   @IsString()
   id: string;
@@ -10,7 +10,7 @@ export class GetUserProfileDto {
   @IsOptional()
   fullname?: string;
 
-  @IsString()
+  @IsPhoneNumber()
   @IsOptional()
   phone?: string;
 

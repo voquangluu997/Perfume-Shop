@@ -149,7 +149,7 @@ export class PerfumeService {
   }
 
   async getPerfumes(filterDto: GetPerfumesFilterDto) {
-    const { search, page, limit, sort } = filterDto;
+    const { search, page, limit, sort, brand, fragrance, order } = filterDto;
     const pagination = {
       page: +page || 1,
       limit: +limit || 10,
@@ -159,14 +159,25 @@ export class PerfumeService {
     const query = this.perfumesRepository
       .createQueryBuilder('perfume')
       .leftJoinAndSelect('perfume.brand', 'brand')
-      .leftJoinAndSelect('perfume.fragrance', 'fragrance');
-    // .where(`perfume.isDeleted = :isDeleted`, { isDeleted: false });
-
+      .leftJoinAndSelect('perfume.fragrance', 'fragrance')
+      .leftJoinAndSelect('perfume.review', 'review');
     if (search) {
       query.andWhere(
-        '(LOWER(perfume.name) LIKE LOWER(:search) OR perfume.publishYear LIKE :search)',
+        '(LOWER(perfume.name) LIKE LOWER(:search) OR LOWER(perfume.sex) LIKE LOWER(:search) OR  perfume.publishYear LIKE :search OR LOWER(brand.name) LIKE LOWER(:search) OR LOWER(fragrance.name) LIKE LOWER(:search))',
         { search: `%${search}%` },
       );
+    }
+
+    if (brand) {
+      query.andWhere(`LOWER(brand.name) LIKE LOWER(:brand)`, {
+        brand: `%${brand}%`,
+      });
+    }
+
+    if (fragrance) {
+      query.andWhere(`LOWER(fragrance.name) LIKE LOWER(:fragrance)`, {
+        fragrance: `%${fragrance}%`,
+      });
     }
 
     try {
@@ -175,12 +186,30 @@ export class PerfumeService {
         .limit(pagination.limit)
         .offset(skippedItems)
         .getManyAndCount();
+      const dt: any = data[0];
+
+      let ratingAvg = dt.map((item) => {
+        return {
+          total: item.review.length,
+          avg: item?.review.reduce((tol, curr) => {
+            return tol + curr.rating;
+          }, 0),
+        };
+      });
+      ratingAvg = ratingAvg.map((item) => {
+        return {
+          total: item.total,
+          ratingAvg: item.total > 0 ? (item.avg / item.total).toFixed(1) : 0,
+        };
+      });
 
       return {
         data: data[0],
+        reviews: ratingAvg,
         pagination: { ...pagination, totalRows: data[1] },
       };
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(PERFUMES.GET_ALL_FAILED);
     }
   }

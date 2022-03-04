@@ -1,29 +1,9 @@
+import { CART_STATUS } from './../../constants/enum';
 import { Type } from 'class-transformer';
 import { IsEnum, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class GetPerfumesFilterDto {
-  @IsOptional()
-  @IsString()
-  @ApiProperty({
-    required: false,
-    type: String,
-    description: 'search by name, brand, fragrance,sex, public year',
-  })
-  search?: string;
-
-  @IsOptional()
-  @IsString()
-  brand?: string;
-
-  @IsOptional()
-  @IsString()
-  order?: string;
-
-  @IsOptional()
-  @IsString()
-  fragrance?: string;
-
+export class GetBookingFilterDto {
   @IsOptional()
   @Type(() => Number)
   @IsNumber()

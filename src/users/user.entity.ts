@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Review } from '../entities';
+import { Booking } from '../booking/booking.entity';
+import { Cart, Review } from '../entities';
 
 @Entity()
 export class User {
@@ -34,6 +36,21 @@ export class User {
   @UpdateDateColumn({ name: 'updated_at' })
   updateAt: Date;
 
-  @OneToMany(() => Review, (review) => review.user)
+  @OneToMany(() => Review, (review) => review.user, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   reviews: Review[];
+
+  @OneToMany(() => Cart, (cart) => cart.user, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  carts: Cart[];
+
+  @OneToMany(() => Booking, (booking) => booking.user, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  bookings: Booking[];
 }

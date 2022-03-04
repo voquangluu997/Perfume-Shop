@@ -5,12 +5,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Brand } from '../brands/brand.entity';
 import { Fragrance } from '../fragrances/fragrance.entity';
+import { Cart } from '../entities';
 
 @Entity()
 export class Perfume {
@@ -30,7 +32,7 @@ export class Perfume {
   status: string;
 
   @Column({ name: 'publish_year', nullable: true })
-  publishYear: Date;
+  publishYear: string;
 
   @Column({ name: 'is_deleted', nullable: true, default: false })
   isDeleted: boolean;
@@ -44,6 +46,12 @@ export class Perfume {
   @Column({ nullable: true })
   origin: string;
 
+  @OneToMany(() => Cart, (cart) => cart.perfume, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  carts: Cart[];
+
   @ManyToOne(() => Brand, (brand) => brand.perfumes, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
@@ -51,8 +59,8 @@ export class Perfume {
   @JoinColumn({ name: 'brand_id' })
   brand: Brand;
 
-  @OneToOne(()=>Review, (review)=>review.perfume)
-  review: Review
+  @OneToMany(() => Review, (review) => review.perfume)
+  review: Review;
   @ManyToOne(() => Fragrance, (fragrance) => fragrance.perfumes, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',

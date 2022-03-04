@@ -2,28 +2,7 @@ import { Type } from 'class-transformer';
 import { IsEnum, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class GetPerfumesFilterDto {
-  @IsOptional()
-  @IsString()
-  @ApiProperty({
-    required: false,
-    type: String,
-    description: 'search by name, brand, fragrance,sex, public year',
-  })
-  search?: string;
-
-  @IsOptional()
-  @IsString()
-  brand?: string;
-
-  @IsOptional()
-  @IsString()
-  order?: string;
-
-  @IsOptional()
-  @IsString()
-  fragrance?: string;
-
+export class GetReviewsFilterDto {
   @IsOptional()
   @Type(() => Number)
   @IsNumber()
@@ -55,7 +34,7 @@ export class GetPerfumesFilterDto {
   @ApiProperty({
     required: false,
     type: String,
-    description: 'sort by name : DESC/ASC',
+    description: 'sort by time : DESC/ASC',
   })
   sort?: string;
 }

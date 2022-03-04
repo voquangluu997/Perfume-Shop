@@ -9,6 +9,8 @@ import { PerfumeModule } from './perfume/perfume.module';
 import { BrandsModule } from './brands/brands.module';
 import { FragranceModule } from './fragrances/fragrance.module';
 import { ReviewModule } from './review/review.module';
+import { CartModule } from './cart/cart.module';
+import { BookingModule } from './booking/booking.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -43,6 +45,8 @@ import { ReviewModule } from './review/review.module';
     BrandsModule,
     FragranceModule,
     ReviewModule,
+    CartModule,
+    BookingModule,
   ],
 })
 export class AppModule {}

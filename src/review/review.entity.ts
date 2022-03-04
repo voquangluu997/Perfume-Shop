@@ -1,11 +1,12 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../entities';
 import { Perfume } from '../perfume/perfume.entity';
@@ -28,10 +29,13 @@ export class Review {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @OneToOne(() => Perfume, (perfume) => perfume.review)
+  @ManyToOne(() => Perfume, (perfume) => perfume.review)
   @JoinColumn({ name: 'perfume_id' })
   perfume: Perfume;
 
-  @Column({ default: false, name: 'is_deleted', nullable: true })
-  isDeleted: boolean;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 }
