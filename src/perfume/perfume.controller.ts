@@ -47,4 +47,11 @@ export class PerfumeController {
   deletePerfume(@Param('id') id: string) {
     return this.perfumesService.deletePerfume(id);
   }
+
+  // @Get("/admin")
+  // GetPerfumesAdmin( @GetUser() user :User, @Query() filterDto: GetPerfumesFilterAdminDto) {
+  //   return this.perfumesService.getPerfumes(filterDto);
+  // }
+
+
 }

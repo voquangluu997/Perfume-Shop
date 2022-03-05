@@ -22,3 +22,15 @@ export enum PAYMENT_METHOD {
   CASH = 'CASH',
   DEBIT = 'DEBIT',
 }
+
+export enum TIME_ADMIN {
+  D = 'D',
+  W = 'W',
+  M = 'M',
+  Y = 'Y',
+}
+
+export enum ORDER_ADMIN {
+  TIME = 'time',
+  
+}

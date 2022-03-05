@@ -4,7 +4,9 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -14,6 +16,7 @@ import { GetUser } from '../auth/get-user.decorator';
 import { User } from '../entities';
 import { BookingService } from './booking.service';
 import { BookingRequestDto } from './dto/booking.request.dto';
+import { GetFilterAdminDto } from './dto/bookingAdminFilter.dto';
 import { GetBookingFilterDto } from './dto/bookingFilter.dto';
 
 @Controller('bookings')
@@ -28,20 +31,28 @@ export class BookingController {
     return this.bookingService.getAll(user, filterDto);
   }
 
+  @Get('/ad')
+  getAdmin(@GetUser() user: User, @Query() filterDto: GetFilterAdminDto) {
+    return this.bookingService.getAdmin(user, filterDto);
+  }
+  @Patch('/ad/:id')
+  updateAdmin(
+    @GetUser() user: User,
+    @Param('id') id: string,
+    @Query() filterDto: GetFilterAdminDto,
+  ) {
+    return this.bookingService.approveOrder(user, id, filterDto);
+  }
+
   @Get('/:id')
-  getById(@GetUser()user: User,  @Param('id') id: string) {
-    return this.bookingService.getById(user,id);
+  getById(@GetUser() user: User, @Param('id') id: string) {
+    return this.bookingService.getById(user, id);
   }
 
   @Post()
   add(@GetUser() user: User, @Body() bookingDto: BookingRequestDto) {
     return this.bookingService.add(user, bookingDto);
   }
-
-  //   @Put()
-  //   update(@GetUser() user: User, @Body() cartDto: BookingRequestDto) {
-  //     return this.cartService.update(user, cartDto);
-  //   }
 
   @Delete('/:id')
   deleteById(@Param('id') id: string) {
