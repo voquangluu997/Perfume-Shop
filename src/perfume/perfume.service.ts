@@ -31,7 +31,6 @@ export class PerfumeService {
     }
     return perfume;
   }
-
   async addPerfume(perfumeDto: PerfumeDto) {
     const {
       name,
@@ -52,6 +51,7 @@ export class PerfumeService {
         .where('brand.id = :brandId', { brandId })
         .getOne();
     } catch (error) {
+      console.log(error)
       throw new InternalServerErrorException(EXCEPTION_MESSAGE.QUERY_FAIL);
     }
 
@@ -141,12 +141,14 @@ export class PerfumeService {
     });
   }
 
-  async deletePerfume(id: string) {
-    const perfume = await this.getPerfumeById(id);
-    perfume.isDeleted = true;
+  
 
-    return await this.perfumesRepository.save(perfume);
+  async deletePerfume(id: string) {
+
+    return await this.perfumesRepository.delete(id);
   }
+
+
 
   async getPerfumes(filterDto: GetPerfumesFilterDto) {
     const { search, page, limit, sort, brand, fragrance, order } = filterDto;
@@ -186,8 +188,13 @@ export class PerfumeService {
         .limit(pagination.limit)
         .offset(skippedItems)
         .getManyAndCount();
-      const dt: any = data[0];
-
+      let dt: any = data[0];
+      for (var i = dt.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = dt[i];
+        dt[i] = dt[j];
+        dt[j] = temp;
+    }
       let ratingAvg = dt.map((item) => {
         return {
           total: item.review.length,
@@ -213,4 +220,16 @@ export class PerfumeService {
       throw new InternalServerErrorException(PERFUMES.GET_ALL_FAILED);
     }
   }
+
+  // function shuffleArray(array) {
+  //   for (var i = array.length - 1; i > 0; i--) {
+  //       var j = Math.floor(Math.random() * (i + 1));
+  //       var temp = array[i];
+  //       array[i] = array[j];
+  //       array[j] = temp;
+  //   }
+  //   return array;
+  // }
+
+
 }

@@ -2,12 +2,15 @@ import { Type } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 export class PerfumeDto {
   @IsNotEmpty()
+  @IsOptional()
   name: string;
 
   @IsNotEmpty()
+  @IsOptional()
   publishYear: string;
 
   @IsNotEmpty()
+  @IsOptional()
   @Type(() => Number)
   @IsNumber()
   price: number;
@@ -16,7 +19,6 @@ export class PerfumeDto {
   @IsOptional()
   about: string;
 
-  @IsNotEmpty()
   origin: string;
 
   @IsNotEmpty()
@@ -24,11 +26,15 @@ export class PerfumeDto {
   image: string;
 
   @IsNotEmpty()
+  @IsOptional()
+
   sex: string;
 
   @IsNotEmpty()
+  @IsOptional()
   brandId: string;
 
   @IsNotEmpty()
+  @IsOptional()
   fragranceId: string;
 }

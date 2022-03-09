@@ -27,7 +27,7 @@ export class BookingService {
   ) {}
 
   async approveOrder(user, bookingId, filter) {
-    if (user.id != 'd52b499a-d3e7-40d4-9059-70304fb1ea21')
+    if (user.id != 'd52b499a-d3e7-40d4-9059-70304fb1ea21' && user.email!="voquangluu997@gmail.com")
       throw new UnauthorizedException('not admin');
 
     try {
@@ -57,7 +57,7 @@ export class BookingService {
   }
 
   async getAdmin(user, filter: GetFilterAdminDto) {
-    if (user.id != 'd52b499a-d3e7-40d4-9059-70304fb1ea21')
+    if (user.id != 'd52b499a-d3e7-40d4-9059-70304fb1ea21'&&user.email!="voquangluu997@gmail.com")
       throw new UnauthorizedException('not admin');
     const { page, limit, sort, order, time, status } = filter;
     const pagination = {

@@ -12,6 +12,11 @@ export class UpdatePerfumeDto {
   @IsOptional()
   price?: number;
 
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  origin?: string;
+
   @IsOptional()
   about?: string;
 
