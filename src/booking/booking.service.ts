@@ -1,3 +1,4 @@
+import { PaymentDto } from './dto/payment.dto';
 import {
   CART_STATUS,
   TIME_ADMIN,
@@ -16,6 +17,9 @@ import { BookingsRepository } from './booking.repository';
 import { BookingRequestDto } from './dto/booking.request.dto';
 import { GetBookingFilterDto } from './dto/bookingFilter.dto';
 import { GetFilterAdminDto } from './dto/bookingAdminFilter.dto';
+import * as dayjs from 'dayjs';
+import dateFormat from 'dateformat';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class BookingService {
@@ -228,5 +232,63 @@ export class BookingService {
     try {
       return await this.bookingsRepository.delete({ id });
     } catch (error) {}
+  }
+
+  async createPayment(paymentDto: PaymentDto, ipAddr): Promise<string> {
+    var tmnCode = new ConfigService().get('vnp_TmnCode');
+    var secretKey = new ConfigService().get('vnp_HashSecret');
+    var vnpUrl = new ConfigService().get('vnp_Url');
+    var returnUrl = new ConfigService().get('vnp_ReturnUrl');
+    var date = new Date();
+    var createDate = dateFormat(date, 'yyyymmddHHmmss');
+    var orderId = dateFormat(date, 'HHmmss');
+    var { amount, bankCode, orderInfo, orderType, language } = paymentDto;
+
+    if (language === null || language === '') {
+      language = 'vn';
+    }
+    var currCode = 'VND';
+    var vnp_Params = {};
+    vnp_Params['vnp_Version'] = '2.1.0';
+    vnp_Params['vnp_Command'] = 'pay';
+    vnp_Params['vnp_TmnCode'] = tmnCode;
+    // vnp_Params['vnp_Merchant'] = ''
+    vnp_Params['vnp_Locale'] = language;
+    vnp_Params['vnp_CurrCode'] = currCode;
+    vnp_Params['vnp_TxnRef'] = orderId;
+    vnp_Params['vnp_OrderInfo'] = orderInfo;
+    vnp_Params['vnp_OrderType'] = orderType;
+    vnp_Params['vnp_Amount'] = amount * 100;
+    vnp_Params['vnp_ReturnUrl'] = returnUrl;
+    vnp_Params['vnp_IpAddr'] = ipAddr;
+    vnp_Params['vnp_CreateDate'] = createDate;
+    if (bankCode !== null && bankCode !== '') {
+      vnp_Params['vnp_BankCode'] = bankCode;
+    }
+    // vnp_Params = this.sortObject(vnp_Params);
+    var querystring = require('qs');
+    var signData = querystring.stringify(vnp_Params, { encode: false });
+    var crypto = require('crypto');
+    var hmac = crypto.createHmac('sha512', secretKey);
+    var signed = hmac.update(new Buffer(signData, 'utf-8')).digest('hex');
+    vnp_Params['vnp_SecureHash'] = signed;
+    vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
+    return vnpUrl;
+  }
+
+  sortObject(obj) {
+    var sorted = {};
+    var str = [];
+    var key;
+    for (key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        str.push(encodeURIComponent(key));
+      }
+    }
+    str.sort();
+    for (key = 0; key < str.length; key++) {
+      sorted[str[key]] = encodeURIComponent(obj[str[key]]).replace(/%20/g, '+');
+    }
+    return sorted;
   }
 }

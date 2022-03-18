@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   Query,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -18,7 +19,8 @@ import { BookingService } from './booking.service';
 import { BookingRequestDto } from './dto/booking.request.dto';
 import { GetFilterAdminDto } from './dto/bookingAdminFilter.dto';
 import { GetBookingFilterDto } from './dto/bookingFilter.dto';
-
+import { PaymentDto } from './dto/payment.dto';
+import { Request } from '@nestjs/common';
 @Controller('bookings')
 @ApiTags('Booking APIs')
 @ApiBearerAuth('access-token')
@@ -57,5 +59,15 @@ export class BookingController {
   @Delete('/:id')
   deleteById(@Param('id') id: string) {
     return this.bookingService.deleteById(id);
+  }
+
+  @Post('/create-payment-url')
+  createPayment(@Body() paymentDto: PaymentDto, @Request() request) {
+    var ipAddr =
+      request.headers['x-forwarded-for'] ||
+      request.connection.remoteAddress ||
+      request.socket.remoteAddress ||
+      request.connection.socket.remoteAddress;
+    return this.bookingService.createPayment(paymentDto, ipAddr);
   }
 }
